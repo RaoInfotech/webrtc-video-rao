@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { Peer, DataConnection, MediaConnection } from "peerjs";
 import fscreen from 'fscreen';
@@ -45,9 +45,9 @@ export class DashboardComponent implements OnInit {
   callingAudio!: HTMLAudioElement;
   messageAudio: any;
 
-  constructor(public authService: AuthService, public afAuth: AngularFireAuth, public router: Router, public sharedService: SharedService) {}
+  constructor(public authService: AuthService, public afAuth: AngularFireAuth, public router: Router, public sharedService: SharedService,public route:ActivatedRoute) {}
 
-  ngOnInit() {
+async ngOnInit() {
     this.hasFullscreenSupport = fscreen.fullscreenEnabled;
     if (this.hasFullscreenSupport) {
       fscreen.addEventListener('fullscreenchange', () => {
@@ -57,6 +57,16 @@ export class DashboardComponent implements OnInit {
     this.generateNumber();
     this.checkIncomingCall();
     this.loadSounds();
+ 
+    this.route.queryParams.subscribe(async params => {
+      console.log(params);
+      if(params['call']){
+        this.callNumber=params['call'];
+      await this.callButton(params['call']);
+     
+     
+      }
+    })
   }
 
   loadSounds() {
@@ -131,13 +141,19 @@ export class DashboardComponent implements OnInit {
       this.hangUpAfterEvent('Peer Connection Error', true);
     });
     try {
-      const myStream: MediaStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-      });
+      const canvas = document.createElement('canvas');
+      canvas.width = 640;
+      canvas.height = 480;
+      const videoStream = canvas.captureStream(30);
+      // Create a dummy audio track with silence
+      const audioContext = new AudioContext();
+      const audioStream = audioContext.createMediaStreamDestination().stream;
+  
+      // Combine the video and audio tracks into a single media stream
+      const myStream = new MediaStream([videoStream.getVideoTracks()[0], audioStream.getAudioTracks()[0]]);
       if (myStream) {
         this.myCallStream = myStream;
-        this.localVideoStream.nativeElement.srcObject = myStream;
+        // this.localVideoStream.nativeElement.srcObject = myStream;
         this.activeMediaConnection = this.peer.call(callNumber, myStream);
         this.activeMediaConnection.on('stream', (remoteStream: any) => {
           this.remoteVideoStream.nativeElement.srcObject = remoteStream;
