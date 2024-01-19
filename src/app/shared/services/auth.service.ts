@@ -61,7 +61,19 @@ export class AuthService {
       .then((result: any) => {
         if (result.user && result.user.emailVerified) {
           this.SetUserData(result.user);
-          this.router.navigate(['dashboard']);
+          this.route.queryParams.subscribe((params: any) => {
+            console.log(params,"params");
+            if (params.call) {
+              this.router.navigate(['dashboard'], {
+                queryParams: {
+                  call: params.call
+                }
+              });
+            } else {
+              this.router.navigate(['dashboard']);
+            }
+          })
+          // this.router.navigate(['dashboard']);
         } else {
           this.router.navigate(['verify-email-address']);
         }
@@ -152,8 +164,18 @@ export class AuthService {
     return this.afAuth.signInWithPopup(provider)
       .then((result: any) => {
         this.SetUserData(result.user);
-        this.router.navigate(['dashboard']);
-      }).catch((error: any) => {
+        this.route.queryParams.subscribe((params: any) => {
+          console.log(params,"params");
+          if (params.call) {
+            this.router.navigate(['dashboard'], {
+              queryParams: {
+                call: params.call
+              }
+            });
+          } else {
+            this.router.navigate(['dashboard']);
+          }
+        })      }).catch((error: any) => {
         this.sharedService.showAlert({
           class: 'error',
           title: error,
