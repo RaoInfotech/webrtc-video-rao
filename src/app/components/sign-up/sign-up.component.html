@@ -1,4 +1,5 @@
-<form class="d-flex justify-content-center align-items-center flex-column login-form" name="userSignupForm" #userSignupForm="ngForm" novalidate>
+<!-- <form class="d-flex justify-content-center align-items-center flex-column login-form" name="userSignupForm"
+  #userSignupForm="ngForm" novalidate>
   <h4 class="login-logo mb-2">
     <i class="fas fa-video me-2"></i>
     VideoWebRTC
@@ -6,30 +7,27 @@
   <div class="login-block">
     <h5>Sign Up</h5>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Email" name="email" #email="ngModel" [(ngModel)]="registerForm.email" 
-        required email (ngModelChange)="authService.getValidationMessage(email)">
+      <input type="text" class="form-control" placeholder="Email" name="email" #email="ngModel"
+        [(ngModel)]="registerForm.email" required email (ngModelChange)="authService.getValidationMessage(email)">
       <div class="validation-message">{{ email?.errors?.['validationMessage'] }}</div>
     </div>
 
     <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" name="password" #password="ngModel" [(ngModel)]="registerForm.password" 
-        required (ngModelChange)="authService.getValidationMessage(password)">
+      <input type="password" class="form-control" placeholder="Password" name="password" #password="ngModel"
+        [(ngModel)]="registerForm.password" required (ngModelChange)="authService.getValidationMessage(password)">
       <div class="validation-message">{{ password?.errors?.['validationMessage'] }}</div>
     </div>
-
-    <!-- Calling SignIn Api from AuthService -->
+    
     <div class="form-group">
-      <button type="button" class="btn btn-primary" [disabled]="userSignupForm.invalid" 
-          (click)="authService.signUp(registerForm.email, registerForm.password)">
+      <button type="button" class="btn btn-primary" [disabled]="userSignupForm.invalid"
+        (click)="authService.signUp(registerForm.email, registerForm.password)">
         Sign Up
       </button>
     </div>
 
     <div class="form-group">
       <div class="decorated"><span>OR</span></div>
-    </div>
-
-    <!-- Calling GoogleAuth Api from AuthService -->
+    </div>    
     <div class="form-group">
       <button type="button" class="btn btn-danger" (click)="authService.GoogleAuth()">
         <i class="fab fa-google me-1"></i>
@@ -40,4 +38,61 @@
       <span class="link" routerLink="/sign-in">Already have an account ? Sign In</span>
     </div>
   </div>
-</form>
+</form> -->
+<div class="container main_section">
+  <div class="row container_section">
+    <div class="col-sm-6 image_section">
+      <div class="logo_section">
+        <img src="../../../assets/img/Sign up.png" alt="login page image">
+      </div>
+    </div>
+    <div class="col-sm-6 form_section">
+      <div class="login_form">
+        <form name="userSignupForm" #userSignupForm="ngForm" novalidate>
+          <div class="row">
+            <div class="col-sm-12 header_form">
+              <h1>Sign Up</h1>
+              <p>Explore Supersee for an amazing live screen casting experience.</p>
+            </div>
+            <div class="col-sm-12 inputs_section">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="input_box">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" placeholder="Email" name="email" #email="ngModel"
+                      [(ngModel)]="registerForm.email" required email
+                      (ngModelChange)="authService.getValidationMessage(email)">
+                    <div class="validation-message">{{ email?.errors?.['validationMessage'] }}</div>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="input_box">
+                    <label for="email">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="password"
+                      #password="ngModel" [(ngModel)]="registerForm.password" required
+                      (ngModelChange)="authService.getValidationMessage(password)">
+                    <div class="validation-message">{{ password?.errors?.['validationMessage'] }}</div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="sign_in" type="button" [disabled]="userSignupForm.invalid"
+                    (click)="authService.signUp(registerForm.email, registerForm.password)">Sign Up</button>
+                </div>
+                <div class="col-sm-12">
+                  <button class="google_sign_in" (click)="authService.GoogleAuth()"> <img
+                      src="../../../assets/img/google_icon.png"> Continue With Google</button>
+                </div>
+                <div class="col-sm-12 mt-2 d-flex align-items-center justify-content-between flex-wrap">                  
+                  <a routerLink="/sign-in" class="links">Already have an account ? Sign In</a>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
