@@ -32,8 +32,10 @@
             <div class="col-sm-12 header_form">
               <h1>Verify Email</h1>
               <p>Thank You for Registering</p>
-              <p>We have sent a confirmation email to <strong>{{user.email}}</strong>.</p>
-              <p>Please check your email and click on the link to verfiy your email address.</p>
+              <div *ngIf="authService.userData as user">
+                <p>We have sent a confirmation email to <strong>{{user.email}}</strong>.</p>
+                <p>Please check your email and click on the link to verfiy your email address.</p>
+              </div>
             </div>
             <div class="col-sm-12 inputs_section">              
               <hr>
